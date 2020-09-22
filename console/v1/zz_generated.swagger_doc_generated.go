@@ -128,6 +128,65 @@ func (ConsoleNotificationSpec) SwaggerDoc() map[string]string {
 	return map_ConsoleNotificationSpec
 }
 
+var map_ConsoleQuickStart = map[string]string{
+	"": "ConsoleQuickStart is an extension for guiding user thought various workflows in the OpenShift web console.",
+}
+
+func (ConsoleQuickStart) SwaggerDoc() map[string]string {
+	return map_ConsoleQuickStart
+}
+
+var map_ConsoleQuickStartSpec = map[string]string{
+	"":                      "ConsoleQuickStartSpec is the desired quick start configuration.",
+	"displayName":           "displayName is the display name of the Quick Start.",
+	"icon":                  "icon is a base64 encoded image that are used as Quick Start's",
+	"tags":                  "tags is an array of strings that describe the Quick Start.",
+	"durationMinutes":       "durationMinutes describes approximately how many minutes it will take to complete the Quick Start.",
+	"description":           "description is the description of the Quick Start. (includes markdown)",
+	"prerequisites":         "prerequisites contains a list of Quick Start names that must be completed before this Quick Start.",
+	"introduction":          "introduction describes the purpose of the Quick Start. (includes markdown)",
+	"tasks":                 "tasks contains list of tasks that user has to take in order to pass the Quick Start.",
+	"conclusion":            "conclusion sums up the Quick Start and suggests the possible next Quick Starts for user to take. (includes markdown)",
+	"nextQuickStart":        "nextQuickStart is the name of the following Quick Start.",
+	"accessReviewResources": "accessReviewResources containes arrays of resources that user's access will be reviewed against in order for the user to complete the Quick Start. The Quick Start will be hidden if any of the access reviews fail.",
+}
+
+func (ConsoleQuickStartSpec) SwaggerDoc() map[string]string {
+	return map_ConsoleQuickStartSpec
+}
+
+var map_ConsoleQuickStartTask = map[string]string{
+	"":               "ConsoleQuickStartTask is a single step in a Quick Start.",
+	"title":          "title describes the task and will be rendered as a step header.",
+	"description":    "description describes the steps needed to complete the task. (includes markdown)",
+	"review":         "review contains instructions to validate the task is complete. The user will select 'Yes' or 'No' using a radio button, which indicates whether the step was completed successfully.",
+	"recapitulation": "recapitulation contains information about passed step.",
+}
+
+func (ConsoleQuickStartTask) SwaggerDoc() map[string]string {
+	return map_ConsoleQuickStartTask
+}
+
+var map_ConsoleQuickStartTaskRecapitulation = map[string]string{
+	"":        "ConsoleQuickStartTaskRecapitulation contains information about a passed step.",
+	"success": "success describes the succesfully passed task.",
+	"failed":  "failed describes the unsuccessfully passed task.",
+}
+
+func (ConsoleQuickStartTaskRecapitulation) SwaggerDoc() map[string]string {
+	return map_ConsoleQuickStartTaskRecapitulation
+}
+
+var map_ConsoleQuickStartTaskReview = map[string]string{
+	"":               "ConsoleQuickStartTaskReview contains instructions that validate a task was completed successfully.",
+	"instructions":   "instructions contains steps that user needs to take in order to validate his work after going through a task. (includes markdown)",
+	"failedTaskHelp": "failedTaskHelp contains suggestions for a failed task review and is shown at the end of task.",
+}
+
+func (ConsoleQuickStartTaskReview) SwaggerDoc() map[string]string {
+	return map_ConsoleQuickStartTaskReview
+}
+
 var map_ConsoleYAMLSample = map[string]string{
 	"": "ConsoleYAMLSample is an extension for customizing OpenShift web console YAML samples.",
 }
