@@ -87,6 +87,12 @@ spec:
                       URL. Invalid value will prevent a console rollout.
                     type: string
                     pattern: ^$|^((https):\/\/?)[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|\/?))\/$
+              enabledPlugins:
+                description: enabledPlugins defines a list of enabled console plugin
+                  names.
+                type: array
+                items:
+                  type: string
               logLevel:
                 description: "logLevel is an intent based logging for an overall component.
                   \ It does not give fine grained control, but it is a simple way
