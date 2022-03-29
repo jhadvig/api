@@ -85,9 +85,8 @@ type ConsolePluginProxy struct {
 	// Authorization: Bearer sha256~kV46hPnEYhCWFnB85r5NrprAxggzgb6GOeLbgcKNsH0
 	//
 	// By default the access token is not part of the proxied request.
-	// +kubebuilder:default:=false
-	// +kubebuilder:validation:Optional
-	// +optional
+	// +kubebuilder:validation:Required
+	// +required
 	Authorize bool `json:"authorize,omitempty"`
 }
 

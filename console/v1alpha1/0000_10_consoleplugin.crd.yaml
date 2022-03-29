@@ -64,7 +64,6 @@ spec:
                       authorize:
                         description: "authorize indicates if the proxied request should contain the logged-in user's OpenShift access token in the \"Authorization\" request header. For example: \n Authorization: Bearer sha256~kV46hPnEYhCWFnB85r5NrprAxggzgb6GOeLbgcKNsH0 \n By default the access token is not part of the proxied request."
                         type: boolean
-                        default: false
                       caCertificate:
                         description: caCertificate provides the cert authority certificate contents, in case the proxied Service is using custom service CA. By default, the service CA bundle provided by the service-ca operator is used.
                         type: string
