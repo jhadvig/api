@@ -35,7 +35,7 @@ type ConsolePluginSpec struct {
 	Service ConsolePluginService `json:"service"`
 	// proxy is a list of proxies that describe various service type
 	// to which the plugin needs to connect to.
-	// +kubebuilder:validation:Optional
+	// +optional
 	Proxy []ConsolePluginProxy `json:"proxy,omitempty"`
 	// i18n is the configuration of plugin's localization resources.
 	// +kubebuilder:validation:Required
@@ -43,7 +43,7 @@ type ConsolePluginSpec struct {
 }
 
 // LoadType is an enumeration of i18n loading types
-// +kubebuilder:validation:Pattern=`^(Preload|Lazy)$`
+// +kubebuilder:validation:Enum:=Preload;Lazy
 type LoadType string
 
 const (
@@ -66,7 +66,7 @@ type ConsolePluginI18n struct {
 // ConsolePluginProxy holds information on various service types
 // to which console's backend will proxy the plugin's requests.
 type ConsolePluginProxy struct {
-	// backend provides information about endpoint to which the request is proxied to.
+	// endpoint provides information about endpoint to which the request is proxied to.
 	Endpoint ConsolePluginProxyEndpoint `json:"endpoint"`
 	// alias is a proxy name that identifies the plugin's proxy. An alias name
 	// should be unique per plugin. The console backend exposes following
@@ -87,31 +87,37 @@ type ConsolePluginProxy struct {
 	// in case the proxied Service is using custom service CA.
 	// By default, the service CA bundle provided by the service-ca operator is used.
 	// +kubebuilder:validation:Pattern=`^-----BEGIN CERTIFICATE-----([\s\S]*)-----END CERTIFICATE-----\s?$`
-	// +kubebuilder:validation:Optional
+	// +optional
 	CACertificate string `json:"caCertificate,omitempty"`
 	// authorization provides information about authorization type,
 	// which the proxied request should contain
-	// +kubebuilder:validation:Optional
+	// +kubebuilder:default:="None"
+	// +optional
 	Authorization AuthorizationType `json:"authorization,omitempty"`
 }
 
 // ConsolePluginProxyEndpoint holds information about the endpoint to which
 // request will be proxied to.
+// +union
 type ConsolePluginProxyEndpoint struct {
 	// type is the type of the console plugin's proxy. Currently only "Service" is supported.
+	//
+	// When handling unknown values, consumers should report an error and stop processing the plugin.
+	//
 	// +kubebuilder:validation:Required
+	// +unionDiscriminator
 	Type ConsolePluginProxyType `json:"type"`
 	// service is an in-cluster Service that the plugin will connect to.
 	// The Service must use HTTPS. The console backend exposes an endpoint
 	// in order to proxy communication between the plugin and the Service.
 	// Note: service field is required for now, since currently only "Service"
 	// type is supported.
-	// +kubebuilder:validation:Required
-	Service ConsolePluginProxyServiceConfig `json:"service"`
+	// +optional
+	Service *ConsolePluginProxyServiceConfig `json:"service"`
 }
 
 // ProxyType is an enumeration of available proxy types
-// +kubebuilder:validation:Pattern=`^(Service)$`
+// +kubebuilder:validation:Enum:=Service
 type ConsolePluginProxyType string
 
 const (
@@ -120,8 +126,7 @@ const (
 )
 
 // AuthorizationType is an enumerate of available authorization types
-// +kubebuilder:validation:Pattern=`^(UserToken|None)$`
-// +kubebuilder:default:="None"
+// +kubebuilder:validation:Enum:=UserToken;None
 type AuthorizationType string
 
 const (
@@ -177,11 +182,11 @@ type ConsolePluginService struct {
 	// basePath is the path to the plugin's assets. The primary asset it the
 	// manifest file called `plugin-manifest.json`, which is a JSON document
 	// that contains metadata about the plugin and the extensions.
-	// +kubebuilder:validation:Required
 	// +kubebuilder:validation:MinLength=1
 	// +kubebuilder:validation:MaxLength=256
 	// +kubebuilder:validation:Pattern=`^[a-zA-Z0-9.\-_~!$&'()*+,;=:@\/]*$`
 	// +kubebuilder:default:="/"
+	// +optional
 	BasePath string `json:"basePath"`
 }
 
