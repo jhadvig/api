@@ -58,9 +58,9 @@ const (
 // ConsolePluginI18n holds information on localization resources that are served by
 // the dynamic plugin.
 type ConsolePluginI18n struct {
-	// load indicates how the plugin's localization resource should be loaded.
+	// loadType indicates how the plugin's localization resource should be loaded.
 	// +kubebuilder:validation:Required
-	Load LoadType `json:"load"`
+	LoadType LoadType `json:"loadType"`
 }
 
 // ConsolePluginProxy holds information on various service types
