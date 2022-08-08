@@ -67,6 +67,7 @@ type ConsolePluginI18n struct {
 // to which console's backend will proxy the plugin's requests.
 type ConsolePluginProxy struct {
 	// endpoint provides information about endpoint to which the request is proxied to.
+	// +kubebuilder:validation:Required
 	Endpoint ConsolePluginProxyEndpoint `json:"endpoint"`
 	// alias is a proxy name that identifies the plugin's proxy. An alias name
 	// should be unique per plugin. The console backend exposes following
@@ -102,7 +103,8 @@ type ConsolePluginProxy struct {
 type ConsolePluginProxyEndpoint struct {
 	// type is the type of the console plugin's proxy. Currently only "Service" is supported.
 	//
-	// When handling unknown values, consumers should report an error and stop processing the plugin.
+	// ---
+	// + When handling unknown values, consumers should report an error and stop processing the plugin.
 	//
 	// +kubebuilder:validation:Required
 	// +unionDiscriminator
@@ -113,7 +115,7 @@ type ConsolePluginProxyEndpoint struct {
 	// Note: service field is required for now, since currently only "Service"
 	// type is supported.
 	// +optional
-	Service *ConsolePluginProxyServiceConfig `json:"service"`
+	Service *ConsolePluginProxyServiceConfig `json:"service,omitempty"`
 }
 
 // ProxyType is an enumeration of available proxy types
