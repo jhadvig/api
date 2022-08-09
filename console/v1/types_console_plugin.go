@@ -27,12 +27,9 @@ type ConsolePluginSpec struct {
 	// +kubebuilder:validation:MinLength=1
 	// +kubebuilder:validation:MaxLength=128
 	DisplayName string `json:"displayName"`
-	// service is a Kubernetes Service that exposes the plugin using a
-	// deployment with an HTTP server. The Service must use HTTPS and
-	// Service serving certificate. The console backend will proxy the
-	// plugins assets from the Service using the service CA bundle.
+	// backend holds the configuration of backend which is serving console's plugin .
 	// +kubebuilder:validation:Required
-	Service ConsolePluginService `json:"service"`
+	Backend ConsolePluginBackend `json:"backend"`
 	// proxy is a list of proxies that describe various service type
 	// to which the plugin needs to connect to.
 	// +optional
@@ -161,6 +158,35 @@ type ConsolePluginProxyServiceConfig struct {
 	// +kubebuilder:validation:Maximum:=65535
 	// +kubebuilder:validation:Minimum:=1
 	Port int32 `json:"port"`
+}
+
+// ConsolePluginBackendType is an enumeration of available backend types
+// +kubebuilder:validation:Enum:=Service
+type ConsolePluginBackendType string
+
+const (
+	// Service is used when plugin's backend is served by a Kubernetes Service
+	Service ConsolePluginBackendType = "Service"
+)
+
+// ConsolePluginBackend holds information about the endpoint which serves
+// the console's plugin
+// +union
+type ConsolePluginBackend struct {
+	// type is the backend type which servers the console's plugin. Currently only "Service" is supported.
+	//
+	// ---
+	// + When handling unknown values, consumers should report an error and stop processing the plugin.
+	//
+	// +kubebuilder:validation:Required
+	// +unionDiscriminator
+	Type ConsolePluginBackendType `json:"type"`
+	// service is a Kubernetes Service that exposes the plugin using a
+	// deployment with an HTTP server. The Service must use HTTPS and
+	// Service serving certificate. The console backend will proxy the
+	// plugins assets from the Service using the service CA bundle.
+	// +optional
+	Service *ConsolePluginService `json:"service"`
 }
 
 // ConsolePluginService holds information on Service that is serving
