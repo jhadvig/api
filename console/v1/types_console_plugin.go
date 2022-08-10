@@ -35,8 +35,8 @@ type ConsolePluginSpec struct {
 	// +optional
 	Proxy []ConsolePluginProxy `json:"proxy,omitempty"`
 	// i18n is the configuration of plugin's localization resources.
-	// +kubebuilder:validation:Required
-	I18n ConsolePluginI18n `json:"i18n"`
+	// +optional
+	I18n ConsolePluginI18n `json:"i18n,omitempty"`
 }
 
 // LoadType is an enumeration of i18n loading types
