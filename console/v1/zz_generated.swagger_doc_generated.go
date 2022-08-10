@@ -168,9 +168,19 @@ func (ConsolePlugin) SwaggerDoc() map[string]string {
 	return map_ConsolePlugin
 }
 
+var map_ConsolePluginBackend = map[string]string{
+	"":        "ConsolePluginBackend holds information about the endpoint which serves the console's plugin",
+	"type":    "type is the backend type which servers the console's plugin. Currently only \"Service\" is supported.",
+	"service": "service is a Kubernetes Service that exposes the plugin using a deployment with an HTTP server. The Service must use HTTPS and Service serving certificate. The console backend will proxy the plugins assets from the Service using the service CA bundle.",
+}
+
+func (ConsolePluginBackend) SwaggerDoc() map[string]string {
+	return map_ConsolePluginBackend
+}
+
 var map_ConsolePluginI18n = map[string]string{
-	"":        "ConsolePluginI18n holds information on localization resources that are served by the dynamic plugin.",
-	"enabled": "enabled indicates if the plugin contains localization resource. If enabled, i18n namespace, that the plugin contains, will be loaded by the console server. If i18n is not enabled, no i18n namespaces will be loaded for the plugin.",
+	"":         "ConsolePluginI18n holds information on localization resources that are served by the dynamic plugin.",
+	"loadType": "loadType indicates how the plugin's localization resource should be loaded.",
 }
 
 func (ConsolePluginI18n) SwaggerDoc() map[string]string {
@@ -187,15 +197,24 @@ func (ConsolePluginList) SwaggerDoc() map[string]string {
 
 var map_ConsolePluginProxy = map[string]string{
 	"":              "ConsolePluginProxy holds information on various service types to which console's backend will proxy the plugin's requests.",
-	"type":          "type is the type of the console plugin's proxy. Currently only \"Service\" is supported.",
+	"endpoint":      "endpoint provides information about endpoint to which the request is proxied to.",
 	"alias":         "alias is a proxy name that identifies the plugin's proxy. An alias name should be unique per plugin. The console backend exposes following proxy endpoint:\n\n/api/proxy/plugin/<plugin-name>/<proxy-alias>/<request-path>?<optional-query-parameters>\n\nRequest example path:\n\n/api/proxy/plugin/acm/search/pods?namespace=openshift-apiserver",
-	"service":       "service is an in-cluster Service that the plugin will connect to. The Service must use HTTPS. The console backend exposes an endpoint in order to proxy communication between the plugin and the Service. Note: service field is required for now, since currently only \"Service\" type is supported.",
 	"caCertificate": "caCertificate provides the cert authority certificate contents, in case the proxied Service is using custom service CA. By default, the service CA bundle provided by the service-ca operator is used. ",
-	"authorize":     "authorize indicates if the proxied request should contain the logged-in user's OpenShift access token in the \"Authorization\" request header. For example:\n\nAuthorization: Bearer sha256~kV46hPnEYhCWFnB85r5NrprAxggzgb6GOeLbgcKNsH0\n\nBy default the access token is not part of the proxied request.",
+	"authorization": "authorization provides information about authorization type, which the proxied request should contain",
 }
 
 func (ConsolePluginProxy) SwaggerDoc() map[string]string {
 	return map_ConsolePluginProxy
+}
+
+var map_ConsolePluginProxyEndpoint = map[string]string{
+	"":        "ConsolePluginProxyEndpoint holds information about the endpoint to which request will be proxied to.",
+	"type":    "type is the type of the console plugin's proxy. Currently only \"Service\" is supported.",
+	"service": "service is an in-cluster Service that the plugin will connect to. The Service must use HTTPS. The console backend exposes an endpoint in order to proxy communication between the plugin and the Service. Note: service field is required for now, since currently only \"Service\" type is supported.",
+}
+
+func (ConsolePluginProxyEndpoint) SwaggerDoc() map[string]string {
+	return map_ConsolePluginProxyEndpoint
 }
 
 var map_ConsolePluginProxyServiceConfig = map[string]string{
@@ -223,8 +242,8 @@ func (ConsolePluginService) SwaggerDoc() map[string]string {
 
 var map_ConsolePluginSpec = map[string]string{
 	"":            "ConsolePluginSpec is the desired plugin configuration.",
-	"displayName": "displayName is the display name of the plugin.",
-	"service":     "service is a Kubernetes Service that exposes the plugin using a deployment with an HTTP server. The Service must use HTTPS and Service serving certificate. The console backend will proxy the plugins assets from the Service using the service CA bundle.",
+	"displayName": "displayName is the display name of the plugin. The dispalyName should be between 1 and 128 characters.",
+	"backend":     "backend holds the configuration of backend which is serving console's plugin .",
 	"proxy":       "proxy is a list of proxies that describe various service type to which the plugin needs to connect to.",
 	"i18n":        "i18n is the configuration of plugin's localization resources.",
 }
