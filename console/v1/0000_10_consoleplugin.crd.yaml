@@ -17,6 +17,15 @@ spec:
     plural: consoleplugins
     singular: consoleplugin
   scope: Cluster
+  conversion:
+    strategy: Webhook
+    webhook:
+      conversionReviewVersions: ["v1", "v1alpha1"]
+      clientConfig:
+        service:
+          namespace: openshift-console-operator
+          name: conversion-webhook
+          path: /plugins-crd-convert
   versions:
     - name: v1
       schema:
