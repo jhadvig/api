@@ -217,7 +217,7 @@ spec:
         - spec
         type: object
     served: true
-    storage: false
+    storage: true
   - name: v1alpha1
     schema:
       openAPIV3Schema:
@@ -365,4 +365,4 @@ spec:
         - spec
         type: object
     served: true
-    storage: true
+    storage: false
