@@ -61,6 +61,8 @@ type ConsoleSpec struct {
 	// where access to routes is not possible.
 	// +optional
 	Ingress Ingress `json:"ingress"`
+	// testField is a test field for testing purposes.
+	TestField string `json:"testField"`
 }
 
 // ConsoleConfigRoute holds information on external route access to console.
